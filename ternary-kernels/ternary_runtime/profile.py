@@ -1,11 +1,10 @@
 """Model-aware ternary runtime profiles.
 
-Two production targets today:
-  - deepseek_v41: MoE w1/w2/w3 packs (SGLang EP)
-  - bonsai:       dense TernaryLinear (ckpt embeds codes+scales; vLLM/SSD path)
+Public production targets:
+  - flash_next:    Qwen3.8-Flash-Next MoE (gate_up/down, SGLang EP=TP)
+  - deepseek_v41:  DeepSeek-V4.1-Flash MoE (w1/w2/w3, SGLang EP)
 
-Flash-Next (qwen4_exp MoE gate_up/down) is registered for detection; MoE path
-wired, decode Ks specialized — full serve bring-up deferred.
+Dense Bonsai is lab-only: set TERNARY_EXPERIMENTAL=1 to enable.
 """
 
 from __future__ import annotations
@@ -153,9 +152,6 @@ _BY_NAME = {
     "deepseek_v41": DEEPSEEK_V41,
     "deepseek": DEEPSEEK_V41,
     "ds": DEEPSEEK_V41,
-    "bonsai": BONSAI,
-    "bonsai-27b": BONSAI,
-    "ternary-bonsai": BONSAI,
     "flash_next": FLASH_NEXT,
     "flash-next": FLASH_NEXT,
     "qwen4_exp": FLASH_NEXT,
@@ -163,9 +159,27 @@ _BY_NAME = {
     "qwen": FLASH_NEXT,
 }
 
-# Union of every registered specialization (CUDA launch table).
+_EXPERIMENTAL_BY_NAME = {
+    "bonsai": BONSAI,
+    "bonsai-27b": BONSAI,
+    "ternary-bonsai": BONSAI,
+}
+
+
+def _experimental() -> bool:
+    return os.environ.get("TERNARY_EXPERIMENTAL", "").strip() not in ("", "0")
+
+
+def _names() -> dict:
+    out = dict(_BY_NAME)
+    if _experimental():
+        out.update(_EXPERIMENTAL_BY_NAME)
+    return out
+
+
+# Public CUDA launch table (MoE Ks only). Bonsai 17408 stays in the .cu file.
 ALL_SPECIALIZED_K: Tuple[int, ...] = tuple(
-    sorted({k for p in (DEEPSEEK_V41, BONSAI, FLASH_NEXT) for k in p.specialized_k})
+    sorted({k for p in (DEEPSEEK_V41, FLASH_NEXT) for k in p.specialized_k})
 )
 
 # Legacy name kept for imports.
@@ -200,6 +214,11 @@ def detect_from_hf(model_dir: str | Path) -> ModelSpec:
     if mt.startswith("deepseek") or "deepseek" in arch:
         return DEEPSEEK_V41
     if mt in ("qwen3_5", "qwen3_5_text") or "qwen3_5" in arch or "bonsai" in str(model_dir).lower():
+        if not _experimental():
+            raise ValueError(
+                f"dense/Bonsai checkpoint under {model_dir} is not a public Goethe "
+                "target; set TERNARY_EXPERIMENTAL=1 to opt in"
+            )
         layers = int(text.get("num_hidden_layers") or BONSAI.num_layers)
         hidden = int(text.get("hidden_size") or BONSAI.hidden)
         inter = int(text.get("intermediate_size") or BONSAI.intermediate)
@@ -251,11 +270,12 @@ def _forced_name() -> Optional[ModelSpec]:
     raw = os.environ.get("TERNARY_PROFILE", "").strip().lower()
     if not raw:
         return None
-    if raw not in _BY_NAME:
+    names = _names()
+    if raw not in names:
         raise ValueError(
-            f"unknown TERNARY_PROFILE={raw!r}; expect one of {sorted(set(_BY_NAME))}"
+            f"unknown TERNARY_PROFILE={raw!r}; expect one of {sorted(names)}"
         )
-    return _BY_NAME[raw]
+    return names[raw]
 
 
 def resolve_model(

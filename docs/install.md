@@ -5,7 +5,7 @@
 - Linux x86_64, NVIDIA GPU with a recent CUDA toolkit
 - Python ≥ 3.10
 - PyTorch with CUDA matching your driver
-- Optional: [SGLang](https://github.com/sgl-project/sglang) for the patched MoE serve path
+- Optional: [SGLang](https://github.com/sgl-project/sglang) for the patched MoE serve path (see [`examples/SGLANG_PIN`](../examples/SGLANG_PIN))
 
 ## Framework
 
@@ -27,26 +27,28 @@ First kernel use JIT-compiles CUDA extensions into:
 - `$XDG_CACHE_HOME/ternary-flash/build`, else
 - `~/.cache/ternary-flash/build`
 
-Set `TORCH_CUDA_ARCH_LIST` for your GPU if the default is wrong for your machine.
+Set `TORCH_CUDA_ARCH_LIST` for your GPU if the default (`12.0a`) is wrong for your machine.
 
 ## Models
 
 ```python
 import ternary_runtime
 
-m = ternary_runtime.fetch("meshapplied/qwen3.8-flash-next-ternary-latest")
-# or: meshapplied/DeepSeek-V4.1-Flash-NVFP4
+m = ternary_runtime.fetch("meshapplied/Qwen3.8-Flash-Next-Ternary-Latest")
+# or: meshapplied/DeepSeek-V4.1-Flash-Ternary-Latest
 ```
 
 This downloads:
 
-1. The ternary pack from the Goethe/meshapplied Hugging Face repo
+1. The ternary pack from the meshapplied Hugging Face repo
 2. The **base** model from `base_model` in `ternary_config.json` (original publisher)
 
 | Pack | Hugging Face |
 |------|----------------|
-| Qwen3.8-Flash-Next ternary | [meshapplied/qwen3.8-flash-next-ternary-latest](https://huggingface.co/meshapplied/qwen3.8-flash-next-ternary-latest) |
-| DeepSeek-V4.1-Flash ternary | [meshapplied/DeepSeek-V4.1-Flash-NVFP4](https://huggingface.co/meshapplied/DeepSeek-V4.1-Flash-NVFP4) |
+| Qwen3.8-Flash-Next ternary | [meshapplied/Qwen3.8-Flash-Next-Ternary-Latest](https://huggingface.co/meshapplied/Qwen3.8-Flash-Next-Ternary-Latest) |
+| DeepSeek-V4.1-Flash ternary overlay | [meshapplied/DeepSeek-V4.1-Flash-Ternary-Latest](https://huggingface.co/meshapplied/DeepSeek-V4.1-Flash-Ternary-Latest) |
+
+`meshapplied/DeepSeek-V4.1-Flash-NVFP4` is a **legacy alias** (Hub 307 + `fetch()` rewrite). It is not NVFP4 weights.
 
 Cache root: `$TERNARY_HF_CACHE` or `~/.cache/ternary-flash/hub`.
 
@@ -56,7 +58,9 @@ Install SGLang in the same environment (or a sibling venv), then:
 
 ```python
 import ternary_runtime
-ternary_runtime.fetch("meshapplied/qwen3.8-flash-next-ternary-latest")
+ternary_runtime.fetch("meshapplied/Qwen3.8-Flash-Next-Ternary-Latest")
 ternary_runtime.bootstrap()
 # launch_server with --model-path = resolved base_dir
 ```
+
+Or run [`examples/serve_flash_next.sh`](../examples/serve_flash_next.sh).

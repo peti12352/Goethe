@@ -4,12 +4,12 @@ Installable Goethe runtime (`pip install -e .` → import `ternary_runtime`).
 
 | Profile | Kind | Specialized K | Pack layout | Hugging Face pack |
 |---------|------|---------------|-------------|-------------------|
-| `flash_next` | MoE | 2560, 640 | `gate_up_down` | [qwen3.8-flash-next-ternary-latest](https://huggingface.co/meshapplied/qwen3.8-flash-next-ternary-latest) |
-| `deepseek_v41` | MoE | 5120, 2304 | `w123` | [DeepSeek-V4.1-Flash-NVFP4](https://huggingface.co/meshapplied/DeepSeek-V4.1-Flash-NVFP4) (ternary overlay) |
+| `flash_next` | MoE | 2560, 640 | `gate_up_down` | [Qwen3.8-Flash-Next-Ternary-Latest](https://huggingface.co/meshapplied/Qwen3.8-Flash-Next-Ternary-Latest) |
+| `deepseek_v41` | MoE | 5120, 2304 | `w123` | [DeepSeek-V4.1-Flash-Ternary-Latest](https://huggingface.co/meshapplied/DeepSeek-V4.1-Flash-Ternary-Latest) (ternary overlay, not NVFP4) |
 
 ```python
 import ternary_runtime
-m = ternary_runtime.fetch("meshapplied/qwen3.8-flash-next-ternary-latest")
+m = ternary_runtime.fetch("meshapplied/Qwen3.8-Flash-Next-Ternary-Latest")
 ternary_runtime.bootstrap()
 ```
 

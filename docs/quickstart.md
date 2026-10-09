@@ -13,8 +13,8 @@ pip install -e ./ternary-kernels
 ```python
 import ternary_runtime
 
-m = ternary_runtime.fetch("meshapplied/qwen3.8-flash-next-ternary-latest")
-# or: meshapplied/DeepSeek-V4.1-Flash-NVFP4
+m = ternary_runtime.fetch("meshapplied/Qwen3.8-Flash-Next-Ternary-Latest")
+# or: meshapplied/DeepSeek-V4.1-Flash-Ternary-Latest
 print(m.profile, m.pack_dir, m.base_dir)
 ternary_runtime.bootstrap()
 ```
@@ -29,15 +29,24 @@ ternary_runtime.bootstrap()
 
 ## 3. Serve with SGLang
 
-Launch SGLang with `--model-path` = `m.base_dir`, tensor parallel = expert parallel as required by the Hadamard block sizes (see [pack.md](pack.md)). Keep the process environment from step 2 so the runtime can load the pack.
+Keep EP=TP (Hadamard blocks must not split across ranks). Default Flash-Next script uses `--tp-size 1`.
 
 ```bash
+./examples/serve_flash_next.sh
+```
+
+Equivalent manual launch (`--model-path` = `m.base_dir`):
+
+```bash
+export TORCH_CUDA_ARCH_LIST="${TORCH_CUDA_ARCH_LIST:-12.0a}"
 python -m sglang.launch_server \
   --model-path "$TERNARY_MODEL_DIR" \
   --tp-size 1 \
   --host 127.0.0.1 --port 30000 \
   --trust-remote-code
 ```
+
+DeepSeek: [`serve_deepseek.sh`](../examples/serve_deepseek.sh). Needs the full base and large host RAM for Engram. Do not expect a throughput win vs FP4 experts.
 
 ## 4. Local packs (offline)
 

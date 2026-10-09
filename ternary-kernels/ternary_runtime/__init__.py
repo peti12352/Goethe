@@ -1,6 +1,6 @@
-"""Ternary routed-expert runtime (DeepSeek-V4.1 MoE, Flash-Next MoE, Bonsai)."""
+"""Ternary routed-expert runtime (Qwen3.8-Flash-Next and DeepSeek-V4.1-Flash MoE)."""
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 from ternary_runtime.hub import ResolvedModel, fetch, resolve_local
 

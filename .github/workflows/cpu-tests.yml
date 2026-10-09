@@ -1,0 +1,20 @@
+name: cpu-tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install CPU test deps
+        run: pip install pytest safetensors huggingface_hub
+      - name: Hub and profile tests
+        working-directory: ternary-kernels
+        env:
+          PYTHONPATH: .
+        run: pytest -q ternary_runtime/tests/test_hub_config.py ternary_runtime/tests/test_profile.py

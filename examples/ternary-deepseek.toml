@@ -1,4 +1,5 @@
-# Example serve config (paths are placeholders — copy and fill locally).
+# Ternary expert overlay on deepseek-ai/DeepSeek-V4.1-Flash — not NVFP4 weights.
+# Prefer examples/serve_deepseek.sh. Needs full base + Engram host RAM.
 
 [model]
 path = "${TERNARY_MODEL_DIR}"
@@ -10,7 +11,7 @@ pack_dir = "${TERNARY_PACK_DIR}"
 [serve]
 engine = "sglang"
 host = "127.0.0.1"
-port = 30000
+port = 30001
 tp_size = 1
 dtype = "bfloat16"
 trust_remote_code = true

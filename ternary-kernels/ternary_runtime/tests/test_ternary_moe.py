@@ -10,6 +10,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from ternary_runtime.kernels import _p_max, rotate, ternary_grouped, ternary_grouped_ref
 
+pytestmark = pytest.mark.skipif(
+    not torch.cuda.is_available(), reason="CUDA required"
+)
+
 
 @pytest.fixture(autouse=True, params=["fp32", "int8"])
 def decode_mode(request, monkeypatch):

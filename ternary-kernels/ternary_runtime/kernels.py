@@ -2,8 +2,8 @@
 
 CUDA specializations track ``profile.ALL_SPECIALIZED_K``:
   deepseek_v41 → 5120, 2304
-  bonsai       → 5120, 17408
   flash_next   → 2560, 640
+  (Bonsai 17408 remains in the .cu file; not a public profile)
 """
 
 import os

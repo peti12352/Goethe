@@ -18,11 +18,11 @@ from ternary_runtime.profile import (
 )
 
 
-def test_specialized_k_covers_all_models():
-    assert set(ALL_SPECIALIZED_K) == {5120, 2304, 2560, 640, 17408}
+def test_specialized_k_covers_public_models():
+    assert set(ALL_SPECIALIZED_K) == {5120, 2304, 2560, 640}
     assert set(DEEPSEEK_V41.specialized_k) <= set(ALL_SPECIALIZED_K)
-    assert set(BONSAI.specialized_k) <= set(ALL_SPECIALIZED_K)
     assert set(FLASH_NEXT.specialized_k) <= set(ALL_SPECIALIZED_K)
+    assert 17408 not in ALL_SPECIALIZED_K
 
 
 def test_features_gate_models():
@@ -34,13 +34,22 @@ def test_features_gate_models():
 
 
 def test_resolve_forced(monkeypatch):
-    monkeypatch.setenv("TERNARY_PROFILE", "bonsai")
-    monkeypatch.delenv("TERNARY_PACK_DIR", raising=False)
-    assert resolve_model().name == "bonsai"
+    monkeypatch.delenv("TERNARY_EXPERIMENTAL", raising=False)
     monkeypatch.setenv("TERNARY_PROFILE", "deepseek")
+    monkeypatch.delenv("TERNARY_PACK_DIR", raising=False)
     assert resolve_model().name == "deepseek_v41"
     monkeypatch.setenv("TERNARY_PROFILE", "qwen4_exp")
     assert resolve_model().name == "flash_next"
+
+
+def test_bonsai_profile_requires_experimental(monkeypatch):
+    monkeypatch.delenv("TERNARY_EXPERIMENTAL", raising=False)
+    monkeypatch.setenv("TERNARY_PROFILE", "bonsai")
+    monkeypatch.delenv("TERNARY_PACK_DIR", raising=False)
+    with pytest.raises(ValueError, match="unknown TERNARY_PROFILE"):
+        resolve_model()
+    monkeypatch.setenv("TERNARY_EXPERIMENTAL", "1")
+    assert resolve_model().name == "bonsai"
 
 
 def _env_pack(name: str) -> Path | None:
@@ -76,7 +85,8 @@ def test_detect_flash_next_pack():
     or not Path(os.environ["TERNARY_TEST_BONSAI_HF"]).joinpath("config.json").is_file(),
     reason="set TERNARY_TEST_BONSAI_HF to a Bonsai HF checkpoint dir",
 )
-def test_detect_bonsai_hf():
+def test_detect_bonsai_hf(monkeypatch):
+    monkeypatch.setenv("TERNARY_EXPERIMENTAL", "1")
     p = detect_from_hf(os.environ["TERNARY_TEST_BONSAI_HF"])
     assert p.name == "bonsai"
     assert p.kind == "dense"

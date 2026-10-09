@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ternary-flash"
-version = "0.1.0"
+version = "0.1.1"
 description = "Goethe: ternary MoE expert packs and SGLang runtime for DeepSeek-V4.1-Flash and Qwen3.8-Flash-Next"
 readme = "README.md"
 license = { text = "Apache-2.0" }

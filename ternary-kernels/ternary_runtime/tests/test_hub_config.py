@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from ternary_runtime.hub import CONFIG_NAME, load_ternary_config, resolve_local
+from ternary_runtime.hub import CONFIG_NAME, LEGACY_REPO_IDS, load_ternary_config, resolve_local
 
 
 def test_load_ternary_config_roundtrip(tmp_path: Path):
@@ -27,6 +27,13 @@ def test_load_ternary_config_roundtrip(tmp_path: Path):
     resolved = resolve_local(tmp_path, base_dir=base, apply_env=False)
     assert resolved.profile == "flash_next"
     assert resolved.base_dir == base
+
+
+def test_legacy_nvfp4_id_maps_to_ternary():
+    assert (
+        LEGACY_REPO_IDS["meshapplied/DeepSeek-V4.1-Flash-NVFP4"]
+        == "meshapplied/DeepSeek-V4.1-Flash-Ternary-Latest"
+    )
 
 
 def test_missing_config_raises(tmp_path: Path):

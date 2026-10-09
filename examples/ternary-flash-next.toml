@@ -1,5 +1,5 @@
-# Example serve config (paths are placeholders — copy and fill locally).
-# Prefer: ternary_runtime.fetch(...); then point model path at the resolved base_dir.
+# After: python -c "import ternary_runtime; ternary_runtime.fetch('meshapplied/Qwen3.8-Flash-Next-Ternary-Latest')"
+# Prefer examples/serve_flash_next.sh over editing this by hand.
 
 [model]
 path = "${TERNARY_MODEL_DIR}"

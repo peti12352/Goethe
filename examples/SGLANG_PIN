@@ -1,0 +1,8 @@
+# Pin the SGLang build you actually launch. Record SHA after a successful serve.
+# Example (update when the Flash-Next path is verified on a GPU):
+#   pip install "sglang==0.5.3"   # or: pip install sglang @ git+https://github.com/sgl-project/sglang.git@<sha>
+#
+# Required: EP=TP (set --tp-size equal to expert parallel). Hadamard K must not split.
+# Env: TORCH_CUDA_ARCH_LIST=12.0a on Blackwell (sm_120).
+SGLANG_GIT=https://github.com/sgl-project/sglang
+SGLANG_SHA=UNPINNED
