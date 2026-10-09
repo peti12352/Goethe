@@ -1,0 +1,17 @@
+# Example serve config (paths are placeholders — copy and fill locally).
+
+[model]
+path = "${TERNARY_MODEL_DIR}"
+name = "deepseek-v41-flash-ternary"
+
+[ternary]
+pack_dir = "${TERNARY_PACK_DIR}"
+
+[serve]
+engine = "sglang"
+host = "127.0.0.1"
+port = 30000
+tp_size = 1
+dtype = "bfloat16"
+trust_remote_code = true
+mem_fraction_static = 0.90
