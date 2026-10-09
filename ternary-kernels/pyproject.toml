@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ternary-flash"
 version = "0.1.1"
-description = "Goethe: ternary MoE expert packs and SGLang runtime for DeepSeek-V4.1-Flash and Qwen3.8-Flash-Next"
+description = "goethe: ternary MoE expert packs and SGLang runtime for DeepSeek-V4.1-Flash and Qwen3.8-Flash-Next"
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
@@ -29,8 +29,8 @@ sglang = []
 dev = ["pytest"]
 
 [project.urls]
-Homepage = "https://github.com/meshapplied/Goethe"
-Documentation = "https://github.com/meshapplied/Goethe"
+Homepage = "https://github.com/meshapplied/goethe"
+Documentation = "https://github.com/meshapplied/goethe"
 
 [tool.setuptools.packages.find]
 where = ["."]

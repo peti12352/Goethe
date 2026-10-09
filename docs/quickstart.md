@@ -3,8 +3,8 @@
 ## 1. Install
 
 ```bash
-git clone https://github.com/meshapplied/Goethe.git
-cd Goethe
+git clone https://github.com/meshapplied/goethe.git
+cd goethe
 pip install -e ./ternary-kernels
 ```
 

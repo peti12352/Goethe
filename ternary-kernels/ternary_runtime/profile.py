@@ -216,7 +216,7 @@ def detect_from_hf(model_dir: str | Path) -> ModelSpec:
     if mt in ("qwen3_5", "qwen3_5_text") or "qwen3_5" in arch or "bonsai" in str(model_dir).lower():
         if not _experimental():
             raise ValueError(
-                f"dense/Bonsai checkpoint under {model_dir} is not a public Goethe "
+                f"dense/Bonsai checkpoint under {model_dir} is not a public goethe "
                 "target; set TERNARY_EXPERIMENTAL=1 to opt in"
             )
         layers = int(text.get("num_hidden_layers") or BONSAI.num_layers)

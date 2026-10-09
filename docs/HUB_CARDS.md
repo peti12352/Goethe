@@ -11,7 +11,7 @@ Maintainers with write access to `meshapplied` on Hugging Face should keep cards
 
 - DeepSeek: first sentence must say **ternary expert overlay**, not NVFP4 weights.
 - `fetch()` examples must use the canonical ids above.
-- Clone URL: `https://github.com/meshapplied/Goethe.git`
+- Clone URL: `https://github.com/meshapplied/goethe.git`
 - Flash-Next ΔNLL “better than bf16” must stay **unpublished or caveated** until reproduced with the eval script in-tree.
 - DeepSeek held-out ΔNLL vs FP4 (overall +0.202, general +0.415) stays; that is the honest quality signal.
 

@@ -1,4 +1,4 @@
-# Ternary expert overlay on deepseek-ai/DeepSeek-V4.1-Flash — not NVFP4 weights.
+# Ternary expert overlay on deepseek-ai/DeepSeek-V4.1-Flash, not NVFP4 weights.
 # Prefer examples/serve_deepseek.sh. Needs full base + Engram host RAM.
 
 [model]

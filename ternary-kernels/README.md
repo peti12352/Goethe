@@ -1,6 +1,6 @@
 # ternary-kernels
 
-Installable Goethe runtime (`pip install -e .` → import `ternary_runtime`).
+Installable goethe runtime (`pip install -e .` -> import `ternary_runtime`).
 
 | Profile | Kind | Specialized K | Pack layout | Hugging Face pack |
 |---------|------|---------------|-------------|-------------------|

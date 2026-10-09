@@ -1,4 +1,4 @@
-# Goethe
+# goethe
 
 Apache-2.0 ternary MoE runtime for SGLang. Packs store Hadamard-rotated ternary (`{-1,0,+1}`) routed experts; attention, router, shared experts, and MTP stay in the upstream base checkpoint. `ternary_runtime.fetch()` downloads a pack and its base automatically.
 
@@ -18,8 +18,8 @@ DeepSeek still needs the **full base checkpoint** plus host RAM for Engram. Tern
 Not on PyPI. Clone and install:
 
 ```bash
-git clone https://github.com/meshapplied/Goethe.git
-cd Goethe
+git clone https://github.com/meshapplied/goethe.git
+cd goethe
 pip install -e ./ternary-kernels
 python -c "import ternary_runtime; print(ternary_runtime.__version__)"
 ```

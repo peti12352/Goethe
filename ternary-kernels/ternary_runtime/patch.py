@@ -44,7 +44,7 @@ def apply_patches() -> None:
     )
     if _PROFILE.kind != "moe" or not _PROFILE.has("moe_patch"):
         print(
-            f"ternary: {_PROFILE.name} is dense — MoE/SGLang expert patches skipped",
+            f"ternary: {_PROFILE.name} is dense; MoE/SGLang expert patches skipped",
             flush=True,
         )
         return
